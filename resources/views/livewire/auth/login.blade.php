@@ -1,21 +1,20 @@
 <div>
-    <div class="flex items-center justify-center min-h-screen bg-gray-100">
+    <div class="flex items-center justify-center min-h-screen bg-gray-100" data-theme="light">
         <div class="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md">
             <h2 class="text-2xl font-bold text-center">Login</h2>
 
             <x-form wire:submit="authenticate">
-                <x-input label="Email" icon="o-envelope" wire:model="email" hint="Enter your email" />
-                <x-input label="Password" wire:model="password" icon="o-key" type="password"
-                    hint="Enter your password" />
+                <x-input label="Email" icon="o-envelope" wire:model="email" class="border-primary-500" placeholder="Enter your email" required />
+                <x-input label="Password" wire:model="password" icon="o-key" type="password" class="border-primary-500"
+                    placeholder="Enter your password" required />
 
                 <div class="flex items-center justify-between">
                     <div class="flex items-center">
-                        <input id="remember" name="remember" type="checkbox"
-                            class="w-4 h-4 border-gray-300 rounded text-primary-600 focus:ring-primary-500" />
+                        <x-checkbox wire:model="remember" class="w-4 h-4 border-gray-300 rounded text-primary-600 focus:ring-primary-500" />
                         <label for="remember" class="block ml-2 text-sm text-gray-900">Remember me</label>
                     </div>
                     <div class="text-sm">
-                        <a href="{{ route('password.request') }}" class="font-medium text-primary-600 hover:text-primary-500">Forgot your
+                        <a href="{{ route('password.request') }}" class="font-medium text-primary-500 hover:text-primary-500">Forgot your
                             password?</a>
                     </div>
                 </div>

@@ -59,7 +59,7 @@
                 <x-list-item :item="$user" value="name" sub-value="email" no-separator no-hover class="pt-2">
                     <x-slot:actions>
                         <x-button icon="o-power" class="btn-circle btn-ghost btn-xs" tooltip-left="logoff"
-                            no-wire-navigate link="/logout" />
+                            no-wire-navigate link="{{ route('logout') }}" />
                     </x-slot:actions>
                 </x-list-item>
 
@@ -67,13 +67,14 @@
             @endif
 
             {{-- Activates the menu item when a route matches the `link` property --}}
-            <x-menu activate-by-route>
+            <x-menu activate-by-route active-bg-color="bg-primary-500 text-black shadow-sm shadow-black">
                 <x-menu-item title="Dasbor" icon="o-rectangle-group" link="###" />
                 <x-menu-item title="Pengguna" icon="o-users" link="{{ route('admin.users') }}" />
                 <x-menu-item title="Mobil" icon="o-list-bullet" link="{{ route('admin.cars') }}" />
                 <x-menu-item title="Transaksi" icon="o-rectangle-stack" link="{{ route('admin.transaction') }}" />
                 <x-menu-item title="Pengembalian" icon="o-rectangle-stack" link="{{ route('admin.return') }}" />
                 <x-menu-item title="Pembayaran" icon="o-rectangle-stack" link="{{ route('admin.payment') }}" />
+                <x-menu-item title="Laporan" icon="o-document-chart-bar" link="{{ route('admin.report') }}" />
             </x-menu>
         </x-slot:sidebar>
 

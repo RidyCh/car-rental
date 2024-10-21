@@ -21,19 +21,32 @@
                 <span class="block w-6 my-1 border-b-2 border-current"></span>
                 <span class="block w-6 my-1 border-b-2 border-current"></span>
             </button>
-            < class="flex-1 hidden w-full space-y-2 lg:flex lg:items-center lg:space-x-4 lg:space-y-0 lg:w-auto"
+            <div class="flex-1 hidden w-full space-y-2 lg:flex lg:items-center lg:space-x-4 lg:space-y-0 lg:w-auto"
                 data-name="nav-menu">
                 <x-navigation />
-    </div>
-    <div class="inline-flex flex-wrap items-center py-1 space-x-2">
-        <a href="#"
-            class="inline-block px-6 py-2 border border-primary-500 hover:bg-primary-500 hover:text-white text-primary-500">Log
-            In</a>
-        <a href="#"
-            class="inline-block px-6 py-2 text-white border bg-primary-500 border-primary-500 hover:bg-primary-600">Sign
-            Up</a>
-    </div>
-    </div>
-    </nav>
+                <div class="inline-flex flex-wrap items-center py-1 space-x-2">
+                    @auth
+                        <x-dropdown>
+                            <x-slot:trigger>
+                                <x-button icon="s-user" class="btn-circle" />
+                            </x-slot:trigger>
+
+                            <x-menu-item title="Profile" link="{{ route('member.profile') }}" />
+                            <x-menu-item title="Mobil Sewa Saya" link="###" />
+                            <x-menu-item title="Logout" class="hover:bg-red-500 hover:text-black" />
+                        </x-dropdown>
+                    @endauth
+                    @guest
+                        <a href="{{ route('login') }}"
+                            class="inline-block px-6 py-2 border border-primary-500 hover:bg-primary-500 hover:text-white text-primary-500">Log
+                            In</a>
+                        <a href="{{ route('register') }}"
+                            class="inline-block px-6 py-2 text-white border bg-primary-500 border-primary-500 hover:bg-primary-600">Sign
+                            Up</a>
+                    @endguest
+
+                </div>
+            </div>
+        </nav>
     </div>
 </header>

@@ -10,6 +10,8 @@ class TransactionForm extends Form
 {
     public ?ModelsTransaction $transaction;
 
+    public ?int $transactionId = null;
+
     #[Validate('required|string|max:255|exists:users,nik')]
     public $nik = '';
 
@@ -56,6 +58,7 @@ class TransactionForm extends Form
     public function setTransaction(ModelsTransaction $transaction)
     {
         $this->transaction = $transaction;
+        $this->transactionId = $transaction->id;
         $this->nik = $transaction->nik;
         $this->carId = $transaction->car_id;
         $this->amountCar = $transaction->amount_car;
@@ -69,13 +72,19 @@ class TransactionForm extends Form
         $this->status = $transaction->status;
     }
 
-    public function update()
+    public function take($id)
     {
-        $validated = $this->validate();
+        $transaction = ModelsTransaction::findOrFail($id);
 
-        $transaction = ModelsTransaction::findOrFail($this->transaction->id);
+        $transaction->update(['status' => 'On Rent']);
+        $this->reset();
+    }
 
-        $transaction->update($validated);
+    public function cancel($id)
+    {
+        $transaction = ModelsTransaction::findOrFail($id);
+
+        $transaction->update(['status' => 'Cancelled']);
         $this->reset();
     }
 

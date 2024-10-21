@@ -3,12 +3,17 @@
 namespace App\Livewire\Forms;
 
 use App\Models\Payment as ModelsPayment;
+use App\Models\Transaction;
+use App\Models\Returned;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
 class PaymentForm extends Form
 {
     public ?ModelsPayment $payment;
+
+    public ?int $transactionId = null;
+    public float $price = 0;
 
     #[Validate('required|decimal:2|min:0')]
     public $paymentAmount = 0;
@@ -19,15 +24,27 @@ class PaymentForm extends Form
     #[Validate('required|exists:returneds,id')]
     public $returnedId;
 
-    public function store()
+    public function setTransaction($transactionId)
     {
-        $validated = $this->validate();
+        $this->transactionId = $transactionId;
+        $transaction = Transaction::with('returned')->findOrFail($transactionId);
 
-        $payment = ModelsPayment::create($validated);
+        $this->price = $transaction->price_final;
 
-        $this->reset();
-        return $payment;
+        if ($transaction->returned) {
+            $this->price += $transaction->returned->price_penalty;
+        }
     }
+
+    // public function store($transactionId)
+    // {
+    //     $validated = $this->validate();
+
+    //     $payment = ModelsPayment::create($validated);
+
+    //     $this->reset();
+    //     return $payment;
+    // }
 
     public function setPayment(ModelsPayment $payment)
     {
@@ -47,9 +64,9 @@ class PaymentForm extends Form
         $this->reset();
     }
 
-    public function delete($id)
-    {
-        $payment = ModelsPayment::findOrFail($id);
-        $payment->delete();
-    }
+    // public function delete($id)
+    // {
+    //     $payment = ModelsPayment::findOrFail($id);
+    //     $payment->delete();
+    // }
 }

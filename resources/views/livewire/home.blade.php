@@ -24,20 +24,28 @@
                 </button>
                 <div class="flex-1 hidden w-full space-y-2 lg:flex lg:items-center lg:space-x-4 lg:space-y-0 lg:w-auto"
                     data-name="nav-menu">
-                    <div class="flex flex-col mr-auto lg:flex-row">
-                        <a href="#" class="py-2 text-white hover:text-gray-400 lg:p-4">Home</a>
-                        <a href="#" class="py-2 text-white hover:text-gray-400 lg:p-4">Our Cars</a>
-                        <a href="#" class="py-2 text-white hover:text-gray-400 lg:p-4">Our Locations</a>
-                        <a href="#" class="py-2 text-white hover:text-gray-400 lg:p-4">Terms and Conditions</a>
-                        <a href="#" class="py-2 text-white hover:text-gray-400 lg:p-4">Contact Us</a>
-                    </div>
+                    <x-navigation />
                     <div class="inline-flex flex-wrap items-center py-1 space-x-2">
-                        <a href="{{ route('login') }}"
-                            class="inline-block px-6 py-2 border border-primary-500 hover:bg-primary-500 hover:text-white text-primary-500">Log
-                            In</a>
-                        <a href="{{ route('register') }}"
-                            class="inline-block px-6 py-2 text-white border bg-primary-500 border-primary-500 hover:bg-primary-600">Sign
-                            Up</a>
+                        @auth
+                            <x-dropdown>
+                                <x-slot:trigger>
+                                    <x-button icon="s-user" class="btn-circle" />
+                                </x-slot:trigger>
+
+                                <x-menu-item title="Profile" link="{{ route('member.profile') }}" />
+                                <x-menu-item title="Mobil Sewa Saya" link="###" />
+                                <x-menu-item title="Logout" class="hover:bg-red-500 hover:text-black" />
+                            </x-dropdown>
+                        @endauth
+                        @guest
+                            <a href="{{ route('login') }}"
+                                class="inline-block px-6 py-2 border border-primary-500 hover:bg-primary-500 hover:text-white text-primary-500">Log
+                                In</a>
+                            <a href="{{ route('register') }}"
+                                class="inline-block px-6 py-2 text-white border bg-primary-500 border-primary-500 hover:bg-primary-600">Sign
+                                Up</a>
+                        @endguest
+
                     </div>
                 </div>
             </nav>

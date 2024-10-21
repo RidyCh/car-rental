@@ -41,6 +41,7 @@ class UsersForm extends Form
     {
         $validated = $this->validate();
 
+        $validated['password'] = bcrypt($validated['password']);
         $users = ModelsUsers::create($validated);
 
         $this->reset();

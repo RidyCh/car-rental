@@ -56,7 +56,7 @@ class Cars extends Component
     {
         if ($this->modalDelete) {
             $this->form->delete($this->modalDelete);
-            $this->success('Car deleted successfully');
+            $this->success('Berhasil menghapus data');
             $this->modalDelete = null;
         }
     }
@@ -65,11 +65,11 @@ class Cars extends Component
     {
         if ($this->editMode) {
             $this->form->update();
-            $this->success('Car updated successfully');
+            $this->success('Berhasil mengupdate data');
 
         } else {
             $this->form->store();
-            $this->success('Car created successfully');
+            $this->success('Berhasil menambah data');
         }
 
         $this->modalForm = false;
@@ -81,14 +81,14 @@ class Cars extends Component
     {
         return [
             ['key' => 'id', 'label' => '#', 'class' => 'w-1'],
-            ['key' => 'name', 'label' => 'Name'],
-            ['key' => 'image', 'label' => 'Image', 'sortable' => false],
-            ['key' => 'brand', 'label' => 'Brand'],
-            ['key' => 'type', 'label' => 'Type'],
-            ['key' => 'year', 'label' => 'Year'],
-            ['key' => 'price', 'label' => 'Price'],
-            ['key' => 'seats_total', 'label' => 'Seats Total'],
-            ['key' => 'stock', 'label' => 'Stock'],
+            ['key' => 'image', 'label' => 'Gambar', 'sortable' => false],
+            ['key' => 'name', 'label' => 'Nama'],
+            ['key' => 'brand', 'label' => 'Merek'],
+            ['key' => 'type', 'label' => 'Tipe'],
+            ['key' => 'year', 'label' => 'Tahun'],
+            ['key' => 'price', 'label' => 'Harga'],
+            ['key' => 'seats_total', 'label' => 'Jumlah Kursi'],
+            ['key' => 'stock', 'label' => 'Stok'],
             ['key' => 'status', 'label' => 'Status'],
         ];
     }

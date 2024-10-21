@@ -25,16 +25,8 @@ class Payment extends Component
 
     public bool $editMode = false;
 
-    public $modalDelete = null;
+    public array $sortBy = ['column' => 'updated_at', 'direction' => 'desc'];
 
-    public array $sortBy = ['column' => 'created_at', 'direction' => 'desc'];
-
-    public function openModal()
-    {
-        $this->form->reset();
-        $this->modalForm = true;
-        $this->editMode = false;
-    }
 
     public function edit($id)
     {
@@ -45,26 +37,10 @@ class Payment extends Component
         $this->editMode = true;
     }
 
-    public function delete()
-    {
-        if ($this->modalDelete) {
-            $this->form->delete($this->modalDelete);
-            $this->success('Data berhasil dihapus');
-            $this->modalDelete = null;
-        }
-    }
-
     public function save()
     {
-        if ($this->editMode) {
-            $this->form->update();
-            $this->success('Data updated successfully');
-
-        } else {
-            $this->form->store();
-            $this->success('Data created successfully');
-        }
-
+        $this->form->update();
+        $this->success('Data updated successfully');
         $this->modalForm = false;
         $this->editMode = false;
     }
@@ -75,8 +51,8 @@ class Payment extends Component
             ['key' => 'id', 'label' => '#', 'class' => 'w-1'],
             ['key' => 'returned_id', 'label' => 'ID Pengembalian'],
             ['key' => 'payment_amount', 'label' => 'Jumlah Pembayaran'],
+            ['key' => 'updated_at', 'label' => 'Tanggal Pembayaran'],
             ['key' => 'status', 'label' => 'Status'],
-            ['key' => 'created_at', 'label' => 'Tanggal Pembayaran'],
         ];
     }
 

@@ -18,11 +18,7 @@ class TopCars extends Component
 
     public function loadTopCars()
     {
-        $this->topCars = Cars::query()
-            ->groupBy('cars.id')
-            ->orderByDesc('rental_count')
-            ->limit($this->topCarsCount)
-            ->get();
+        $this->topCars = Cars::all();
         // $this->topCars = Cars::select('cars.*', DB::raw('COUNT(rentals.id) as rental_count'))
         //     ->leftJoin('transactions', 'cars.id', '=', 'transactons.car_id')
         //     ->groupBy('cars.id')

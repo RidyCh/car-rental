@@ -22,32 +22,36 @@
                 Rp{{ number_format($returned->price_penalty, 2, ',', '.') }}
             @endscope
             @scope('actions', $returned)
-                {{-- <div class="flex gap-x-4">
-                    <x-button icon="o-pencil" wire:click="edit({{ $returned->id }})"
+                @if ($returned->payment)
+                    @if ($returned->payment->status === 'Paid')
+                        <x-badge value="Lunas" class="badge-success" />
+                    @else
+                        <x-button icon="s-wallet" wire:click="pay({{ $returned->id }})"
+                            class="text-green-500 btn-ghost btn-sm" />
+                    @endif
+                @else
+                    <x-button icon="s-wallet" wire:click="pay({{ $returned->id }})"
                         class="text-green-500 btn-ghost btn-sm" />
-                </div> --}}
+                @endif
             @endscope
         </x-table>
     </x-card>
 
-    {{-- MODAL FORM --}}
-    {{-- <x-modal wire:model="modalForm" class="backdrop-blur"
-        title="{{ $editMode ? 'Edit Pengembalian' : 'Tambah Pengembalian Baru' }}">
-        <x-form wire:submit.prevent="save">
-            <x-select label="ID Transaksi" wire:model="form.transactionId" :options="$transactions" option-label="id"
-                option-value="id" required placeholder="Pilih ID Transaksi" />
-            <x-datetime label="Tanggal Kembali" min="{{ now()->toDateString() }}" wire:model="form.returnDate"
-                required />
-            <x-textarea label="Kondisi Mobil" wire:model="form.conditionCar" />
-            <x-input type="number" label="Denda" wire:model="form.pricePenalty" step="0.01" required>
+    {{-- MODAL PAY --}}
+    <x-modal wire:model="modalPay" class="backdrop-blur" title="Lakukan Pembayaran!" persistent>
+        <x-form wire:submit.prevent="savePay">
+            <x-input type="number" label="Total Harga" wire:model="priceTotal" step="0.01" readonly>
+                <x-slot:prefix>Rp</x-slot:prefix>
+            </x-input>
+            <x-input type="number" label="Jumlah Pembayaran" wire:model="paymentForm.paymentAmount" step="0.01"
+                required>
                 <x-slot:prefix>Rp</x-slot:prefix>
             </x-input>
 
             <div class="flex justify-end gap-x-4">
-                <x-button label="Batal" flat @click="$wire.modalForm = false" />
-                <x-button type="submit" class="btn-success" label="{{ $editMode ? 'Perbarui' : 'Buat' }}" primary
-                    spinner="save" />
+                <x-button label="Batal" flat @click="$wire.modalPay = false" />
+                <x-button type="submit" class="btn-success" label="Bayar" primary spinner="savePay" />
             </div>
         </x-form>
-    </x-modal> --}}
+    </x-modal>
 </div>

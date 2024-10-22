@@ -61,6 +61,30 @@ class UsersForm extends Form
         $this->role = $user->role;
     }
 
+    // public function updateProfile()
+    // {
+    //     $this->validate([
+    //         'name' => 'required|string|max:255',
+    //         'username' => 'required|string|max:255|unique:users,username,' . auth()->id(),
+    //         'email' => 'required|email|max:255|unique:users,email,' . auth()->id(),
+    //         'phone_number' => 'string|max:20',
+    //         'address' => 'string',
+    //         'gender' => 'in:Male,Female',
+    //         'nik' => 'string|size:16|unique:users,nik,' . auth()->id(),
+    //     ]);
+
+    //     auth()->user()->update([
+    //         'name' => $this->name,
+    //         'username' => $this->username,
+    //         'email' => $this->email,
+    //         'phone_number' => $this->phoneNumber,
+    //         'address' => $this->address,
+    //         'gender' => $this->gender,
+    //         'nik' => $this->nik,
+    //     ]);
+    //     $this->reset();
+    // }
+
     public function update()
     {
         $validated = $this->validate([

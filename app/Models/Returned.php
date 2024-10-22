@@ -25,4 +25,9 @@ class Returned extends Model
     {
         return $this->belongsTo(Transaction::class);
     }
+
+    public function payment()
+    {
+        return $this->hasOne(Payment::class);
+    }
 }

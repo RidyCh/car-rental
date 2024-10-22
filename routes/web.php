@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
  */
 
 Route::get('/', App\Livewire\Home::class)->name('home');
+Route::get('/detail-car/{slug}', App\Livewire\DetailCar::class)->name('car.show');
 
 // Authentication Routes
 Route::middleware(['guest'])->group(function () {
@@ -48,6 +49,7 @@ Route::get('/forgot-password', App\Livewire\Auth\ForgotPassword::class)->middlew
 // reset password
 Route::get('/reset-password/{token}', App\Livewire\Auth\ResetPassword::class)->middleware('auth')->name('password.reset');
 Route::get('/member/profile', App\Livewire\Profile::class)->middleware('auth')->name('member.profile');
+Route::get('/member/my-rent-cars', App\Livewire\MyRentCar::class)->middleware('auth')->name('member.my-rent-cars');
 
 Route::middleware(['check'])->group(function () {
     Route::get('/admin/users', App\Livewire\Admin\Users::class)->name('admin.users');

@@ -18,6 +18,8 @@ class CarsForm extends Form
     #[Validate('required|string|max:255')]
     public $name = '';
 
+    public $slug;
+
     #[Validate('required|string|max:255')]
     public $brand = '';
 
@@ -45,6 +47,8 @@ class CarsForm extends Form
     public function store()
     {
         $validated = $this->validate();
+
+        $validated['slug'] = Str::slug($validated['name']);
 
         if ($this->image) {
             $imageName = Str::random(20) . '.' . $this->image->getClientOriginalExtension();

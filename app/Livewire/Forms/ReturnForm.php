@@ -2,9 +2,9 @@
 
 namespace App\Livewire\Forms;
 
-use App\Models\Transaction as ModelsTransaction;
-use App\Models\Returned;
 use App\Models\Payment;
+use App\Models\Returned;
+use App\Models\Transaction as ModelsTransaction;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
@@ -28,7 +28,8 @@ class ReturnForm extends Form
 
         $pricePenalty = 0;
         if ($returnDate > $rentalEndDate) {
-            $pricePenalty = 100000;
+            $daysLate = $returnDate->diffInDays($rentalEndDate);
+            $pricePenalty = $daysLate * 100000;
         }
 
         $return = Returned::create([
@@ -43,10 +44,16 @@ class ReturnForm extends Form
         ]);
         $return->transaction()->update(['status' => 'Returned']);
 
-        if($return) {
+        $car = $transaction->car;
+        $car->update([
+            'stock' => $car->stock + $transaction->amount_car,
+        ]);
+
+        if ($return) {
             Payment::create([
                 'returned_id' => $return->id,
                 'payment_amount' => 0,
+                'total_payment' => $return->transaction->price_total,
                 'status' => 'Unpaid',
             ]);
         }

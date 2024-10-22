@@ -86,22 +86,12 @@ class Transaction extends Component
         $this->success('Berhasil mengembalikan mobil, silahkan lanjutkan pembayaran!');
     }
 
-    public function savePay($id)
-    {
-        $this->paymentForm->store($this->form->transactionId);
-        $this->paymentForm->setTransaction($id);
-        $this->modalPay = true;
-        $this->modalDetail = false;
-        $this->dispatch('refreshTransactions');
-        $this->success('Pembayaran berhasil dilakukan!');
-    }
-
     // Table headers
     public function headers(): array
     {
         return [
             ['key' => 'id', 'label' => '#', 'class' => 'w-1'],
-            ['key' => 'nik', 'label' => 'Nama Member'],
+            ['key' => 'user_id', 'label' => 'Nama Member'],
             ['key' => 'car_id', 'label' => 'Mobil'],
             ['key' => 'amount_car', 'label' => 'Jumlah Mobil'],
             ['key' => 'rental_date', 'label' => 'Tanggal Sewa'],
@@ -123,7 +113,7 @@ class Transaction extends Component
                 $query->orderBy($this->sortBy['column'], $this->sortBy['direction']);
             })
             ->when($this->search, function ($query) {
-                $query->where('nik', 'like', '%' . $this->search . '%')
+                $query->where('user_id', 'like', '%' . $this->search . '%')
                     ->orWhere('status', 'like', '%' . $this->search . '%');
             })
             ->paginate(10);

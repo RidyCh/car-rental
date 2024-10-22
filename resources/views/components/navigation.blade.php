@@ -8,7 +8,7 @@
     <x-nav-link href="#" class="py-2 text-white hover:text-gray-400 lg:p-4">
         Terms and Conditions
     </x-nav-link>
-    <x-nav-link href="#" :active="" class="py-2 text-white hover:text-gray-400 lg:p-4">
+    <x-nav-link href="#" class="py-2 text-white hover:text-gray-400 lg:p-4">
         Contact Us
     </x-nav-link>
 </div>

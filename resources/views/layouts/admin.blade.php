@@ -69,11 +69,15 @@
             {{-- Activates the menu item when a route matches the `link` property --}}
             <x-menu activate-by-route active-bg-color="bg-primary-500 text-black shadow-sm shadow-black">
                 <x-menu-item title="Dasbor" icon="o-rectangle-group" link="###" />
-                <x-menu-item title="Pengguna" icon="o-users" link="{{ route('admin.users') }}" />
-                <x-menu-item title="Mobil" icon="o-list-bullet" link="{{ route('admin.cars') }}" />
-                <x-menu-item title="Transaksi" icon="o-rectangle-stack" link="{{ route('admin.transaction') }}" />
-                <x-menu-item title="Pengembalian" icon="o-rectangle-stack" link="{{ route('admin.return') }}" />
-                <x-menu-item title="Pembayaran" icon="o-rectangle-stack" link="{{ route('admin.payment') }}" />
+                @if (auth()->user()->role == 'Administrator')
+                    <x-menu-item title="Pengguna" icon="o-users" link="{{ route('admin.users') }}" />
+                @endif
+                @if (auth()->user()->role == 'Petugas')
+                    <x-menu-item title="Mobil" icon="o-list-bullet" link="{{ route('admin.cars') }}" />
+                    <x-menu-item title="Transaksi" icon="o-rectangle-stack" link="{{ route('admin.transaction') }}" />
+                    <x-menu-item title="Pengembalian" icon="o-rectangle-stack" link="{{ route('admin.return') }}" />
+                    <x-menu-item title="Pembayaran" icon="o-rectangle-stack" link="{{ route('admin.payment') }}" />
+                @endif
                 <x-menu-item title="Laporan" icon="o-document-chart-bar" link="{{ route('admin.report') }}" />
             </x-menu>
         </x-slot:sidebar>

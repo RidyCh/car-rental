@@ -10,11 +10,12 @@
         </x-slot:actions>
     </x-header>
 
+    {{-- @row-click="$wire.showDetail($event.detail.id)" --}}
     <!-- TABLE  -->
     <x-card>
         <x-table :headers="$headers" :rows="$transactions" :sort-by="$sortBy" striped
-            @row-click="$wire.showDetail($event.detail.id)" with-pagination>
-            @scope('cell_nik', $transaction)
+             with-pagination>
+            @scope('cell_user_id', $transaction)
                 {{ $transaction->user->name }}
             @endscope
             @scope('cell_car_id', $transaction)
@@ -67,10 +68,10 @@
                         <x-button icon="s-arrow-uturn-left" wire:click="return({{ $transaction->id }})"
                             class="text-green-500 btn-ghost btn-sm" />
                     @endif
-                    @if ($transaction->status == 'Returned')
+                    {{-- @if ($transaction->status == 'Returned')
                         <x-button icon="s-wallet" wire:click="pay({{ $transaction->id }})"
                             class="text-green-500 btn-ghost btn-sm" />
-                    @endif
+                    @endif --}}
                 </div>
             @endscope
         </x-table>
@@ -123,10 +124,11 @@
     </x-modal>
 
     {{-- MODAL PAY --}}
-    <x-modal wire:model="modalPay" class="backdrop-blur" title="Lakukan Pembayaran!" persistent>
+    {{-- <x-modal wire:model="modalPay" class="backdrop-blur" title="Lakukan Pembayaran!" persistent>
         <x-form wire:submit="savePay">
-            {{-- <x-select label="ID Pengembalian" wire:model="form.returnedId" :options="$returneds" option-label="id"
-                option-value="id" required placeholder="Pilih ID Pengembalian" /> --}}
+            <x-input type="number" label="Total Harga" wire:model.live="form.price" step="0.01" readonly>
+                <x-slot:prefix>Rp</x-slot:prefix>
+            </x-input>
             <x-input type="number" label="Jumlah Pembayaran" wire:model="form.paymentAmount" step="0.01" required>
                 <x-slot:prefix>Rp</x-slot:prefix>
             </x-input>
@@ -136,5 +138,5 @@
                 <x-button type="submit" class="btn-success" label="Bayar" primary spinner="save" />
             </div>
         </x-form>
-    </x-modal>
+    </x-modal> --}}
 </div>

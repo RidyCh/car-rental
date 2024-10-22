@@ -2,16 +2,16 @@
 
 namespace App\Livewire\Admin;
 
-use Mary\Traits\Toast;
-use Livewire\Component;
-use App\Models\Returned;
-use Livewire\WithPagination;
-use Livewire\Attributes\Title;
-use Livewire\Attributes\Layout;
-use Livewire\WithoutUrlPagination;
 use App\Livewire\Forms\PaymentForm;
 use App\Models\Payment as ModelsPayment;
+use App\Models\Returned;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
+use Livewire\Component;
+use Livewire\WithoutUrlPagination;
+use Livewire\WithPagination;
+use Mary\Traits\Toast;
 
 class Payment extends Component
 {
@@ -26,7 +26,6 @@ class Payment extends Component
     public bool $editMode = false;
 
     public array $sortBy = ['column' => 'updated_at', 'direction' => 'desc'];
-
 
     public function edit($id)
     {
@@ -51,6 +50,7 @@ class Payment extends Component
             ['key' => 'id', 'label' => '#', 'class' => 'w-1'],
             ['key' => 'returned_id', 'label' => 'ID Pengembalian'],
             ['key' => 'payment_amount', 'label' => 'Jumlah Pembayaran'],
+            ['key' => 'total_payment', 'label' => 'Total Harga'],
             ['key' => 'updated_at', 'label' => 'Tanggal Pembayaran'],
             ['key' => 'status', 'label' => 'Status'],
         ];

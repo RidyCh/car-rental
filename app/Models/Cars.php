@@ -11,6 +11,7 @@ class Cars extends Model
 
     protected $fillable = [
         'name',
+        'slug',
         'brand',
         'type',
         'image',

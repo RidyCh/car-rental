@@ -2,135 +2,98 @@
 
 namespace App\Livewire\Admin;
 
-use Mary\Traits\Toast;
-use Livewire\Component;
-use Livewire\WithPagination;
-use Livewire\Attributes\Title;
-use Livewire\Attributes\Layout;
-use App\Models\Cars as ModelsCars;
-use Livewire\WithoutUrlPagination;
-use App\Models\User as ModelsUsers;
+use App\Livewire\Forms\PaymentForm;
+use App\Livewire\Forms\ReturnForm;
 use App\Livewire\Forms\TransactionForm;
-use Illuminate\Pagination\LengthAwarePaginator;
 use App\Models\Transaction as ModelsTransaction;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
+use Livewire\Component;
+use Livewire\WithoutUrlPagination;
+use Livewire\WithPagination;
+use Mary\Traits\Toast;
 
 class Transaction extends Component
 {
     public TransactionForm $form;
+    public ReturnForm $returnForm;
+    public PaymentForm $paymentForm;
 
     use WithPagination, WithoutUrlPagination, Toast;
 
-    public bool $modalForm = false;
-
-    public bool $editMode = false;
-
+    public $modalTake = null;
+    public $modalCancel = null;
+    public bool $modalDetail = false;
+    public bool $modalReturn = false;
+    public bool $modalPay = false;
     public $search = '';
 
     public array $sortBy = ['column' => 'rental_date', 'direction' => 'desc'];
 
-    public $modalDelete = null;
+    public $statusOptions = [
+        ['name' => 'Booked', 'value' => 'Booked'],
+        ['name' => 'On Rent', 'value' => 'On Rent'],
+        ['name' => 'Returned', 'value' => 'Returned'],
+        ['name' => 'Cancelled', 'value' => 'Cancelled'],
+    ];
 
-    public $carPrice;
-
-    public $users;
-
-    public $cars;
-
-    public function mount()
-    {
-        $this->users = ModelsUsers::all();
-        $this->cars = ModelsCars::all();
-    }
-
-    public function openModal()
-    {
-        $this->form->reset();
-        $this->modalForm = true;
-        $this->editMode = false;
-    }
-
-    public function edit($id)
+    public function showDetail($id)
     {
         $transaction = ModelsTransaction::findOrFail($id);
 
         $this->form->setTransaction($transaction);
-        $this->modalForm = true;
-        $this->editMode = true;
+        $this->modalDetail = true;
     }
 
-    public function delete()
+    public function take()
     {
-        if ($this->modalDelete) {
-            $this->form->delete($this->modalDelete);
-            $this->success('Data berhasil dihapus');
-            $this->modalDelete = null;
+        $this->modalDetail = false;
+        if ($this->modalTake) {
+            $this->form->take($this->modalTake);
+            $this->dispatch('refreshTransactions');
+            $this->success('Mobil sudah diambil');
+            $this->modalTake = null;
         }
     }
 
-    public function save()
+    public function cancel()
     {
-        if ($this->editMode) {
-            $this->form->update();
-            $this->success('Data berhasil diperbarui');
-
-        } else {
-            $this->form->store();
-            $this->success('Data berhasil dibuat');
-        }
-
-        $this->modalForm = false;
-        $this->editMode = false;
-    }
-
-    public function updateCarPrice()
-    {
-        if ($this->form->carId) {
-            $car = ModelsCars::find($this->form->carId);
-            if ($car) {
-                $this->carPrice = $car->price;
-                $this->calculateTotal();
-            }
+        $this->modalDetail = false;
+        if ($this->modalCancel) {
+            $this->form->cancel($this->modalCancel);
+            $this->dispatch('refreshTransactions');
+            $this->success('Booking berhasil dibatalkan');
+            $this->modalCancel = null;
         }
     }
 
-    public function calculateTotal()
+    public function return ($id)
     {
-        $carPrice = $this->form->carPrice ?? 0;
-        $amountCar = $this->form->amountCar ?? 1;
-        $duration = $this->form->duration ?? 1;
-        $driverCost = $this->form->driver ? 100000 : 0;
-
-        $total = ($carPrice * $amountCar * $duration) + $driverCost;
-        $this->form->priceTotal = $total;
-
-        $this->calculateFinal();
+        $transaction = ModelsTransaction::findOrFail($id);
+        $this->form->setTransaction($transaction);
+        $this->modalReturn = true;
+        $this->modalDetail = false;
     }
 
-    public function calculateFinal()
+    public function saveReturn()
     {
-        $total = $this->form->priceTotal ?? 0;
-        $dp = $this->form->dp ?? 0;
-        $this->form->priceFinal = $total - $dp;
+        $this->returnForm->store($this->form->transactionId);
+
+        $this->modalReturn = false;
+        $this->modalDetail = false;
+        $this->dispatch('refreshTransactions');
+        $this->success('Berhasil mengembalikan mobil, silahkan lanjutkan pembayaran!');
     }
 
-    public function updatedFormAmountCar()
+    public function savePay($id)
     {
-        $this->calculateTotal();
-    }
-
-    public function updatedFormDuration()
-    {
-        $this->calculateTotal();
-    }
-
-    public function updatedFormDriver()
-    {
-        $this->calculateTotal();
-    }
-
-    public function updatedFormDp()
-    {
-        $this->calculateFinal();
+        $this->paymentForm->store($this->form->transactionId);
+        $this->paymentForm->setTransaction($id);
+        $this->modalPay = true;
+        $this->modalDetail = false;
+        $this->dispatch('refreshTransactions');
+        $this->success('Pembayaran berhasil dilakukan!');
     }
 
     // Table headers
@@ -138,7 +101,7 @@ class Transaction extends Component
     {
         return [
             ['key' => 'id', 'label' => '#', 'class' => 'w-1'],
-            ['key' => 'nik', 'label' => 'NIK'],
+            ['key' => 'nik', 'label' => 'Nama Member'],
             ['key' => 'car_id', 'label' => 'Mobil'],
             ['key' => 'amount_car', 'label' => 'Jumlah Mobil'],
             ['key' => 'rental_date', 'label' => 'Tanggal Sewa'],
@@ -155,6 +118,7 @@ class Transaction extends Component
     public function transactions(): LengthAwarePaginator
     {
         return ModelsTransaction::query()
+            ->with('user', 'car')
             ->when($this->sortBy['column'], function ($query) {
                 $query->orderBy($this->sortBy['column'], $this->sortBy['direction']);
             })
@@ -170,10 +134,6 @@ class Transaction extends Component
     public function render()
     {
         return view('livewire.admin.transaction', [
-            'users' => ModelsUsers::where('role', 'Member')
-                ->whereNotNull('nik')
-                ->get(),
-            'cars' => ModelsCars::where('status', 'Available')->get(),
             'transactions' => $this->transactions(),
             'headers' => $this->headers(),
         ]);

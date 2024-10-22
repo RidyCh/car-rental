@@ -10,7 +10,7 @@ class Transaction extends Model
     use HasFactory;
 
     protected $fillable = [
-        'nik',
+        'user_id',
         'car_id',
         'amount_car',
         'rental_date',
@@ -24,8 +24,8 @@ class Transaction extends Model
     ];
 
     protected $casts = [
-        'rental_date' => 'date',
-        'pick_up_at' => 'time',
+        'rental_date' => 'date:d F Y',
+        'pick_up_at' => 'datetime:H:i',
         'driver' => 'boolean',
         'price_total' => 'decimal:2',
         'dp' => 'decimal:2',
@@ -34,11 +34,16 @@ class Transaction extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'nik', 'nik');
+        return $this->belongsTo(User::class);
     }
 
     public function car()
     {
         return $this->belongsTo(Cars::class);
+    }
+
+    public function returned()
+    {
+        return $this->hasOne(Returned::class);
     }
 }

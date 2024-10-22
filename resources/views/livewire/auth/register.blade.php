@@ -1,17 +1,18 @@
 <div>
-    <div class="flex items-center justify-center min-h-screen bg-gray-100">
+    <div class="flex items-center justify-center min-h-screen bg-gray-100" data-theme="light">
         <div class="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md">
             <h2 class="text-2xl font-bold text-center">Register</h2>
 
             <x-form wire:submit="register">
-                <x-input label="Name" icon="o-user" wire:model="name" hint="Enter your Name" />
+                <div class="flex space-x-4">
+                    <x-input class="flex-1" label="Name" icon="o-user" wire:model="name" placeholder="Enter your Name" />
+                    <x-input class="flex-1" label="Username" icon="o-user" wire:model="username" placeholder="Enter your username" />
+                </div>
 
-                <x-input label="Username" icon="o-user" wire:model="username" hint="Enter your username" />
-
-                <x-input label="Email" icon="o-envelope" wire:model="email" hint="Enter your email" />
+                <x-input label="Email" icon="o-envelope" wire:model="email" placeholder="Enter your email" />
 
                 <x-input label="Password" wire:model="password" icon="o-key" type="password"
-                    hint="Enter your password" />
+                    placeholder="Enter your password" />
 
                 <x-slot:actions>
                     <x-button class="w-full text-white border-none bg-primary-500 hover:bg-primary-600" label="Register"

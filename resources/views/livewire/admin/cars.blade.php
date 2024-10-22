@@ -31,31 +31,39 @@
     </x-card>
 
     {{-- DIALOG DELETE --}}
-    <x-modal wire:model="modalDelete" title="Confirm Deletion">
-        <p>Are you sure you want to delete this data?</p>
+    <x-modal wire:model="modalDelete" title="Konfirmasi penghapusan" persistent>
+        <p>Yakin ingin menghapus data?</p>
         <div class="flex justify-end gap-x-4">
-            <x-button flat label="Cancel" x-on:click="close" />
-            <x-button negative label="Delete" class="btn-error" wire:click="delete" />
+            <x-button flat label="Tidak" @click="$wire.modalDelete = false" />
+            <x-button negative label="Hapus" class="btn-error" wire:click="delete" />
         </div>
     </x-modal>
 
     {{-- MODAL FORM --}}
-    <x-modal wire:model="modalForm" class="backdrop-blur" title="{{ $editMode ? 'Edit Car' : 'Add New Car' }}">
+    <x-modal wire:model="modalForm" class="backdrop-blur" title="{{ $editMode ? 'Edit Mobil' : 'Tambah Mobil Baru' }}">
         <x-form wire:submit.prevent="save">
-            <x-input label="Name" wire:model="form.name" required />
-            <x-input label="Brand" wire:model="form.brand" required />
-            <x-input label="Type" wire:model="form.type" required />
-            <x-input type="number" label="Year" wire:model="form.year" required />
-            <x-input type="number" label="Price" wire:model="form.price" step="0.01" required />
-            <x-input type="number" label="Seats Total" min="1" wire:model="form.seatsTotal" required />
-            <x-input type="number" label="Stock" min="0" wire:model="form.stock" required />
-            <x-select label="Status" wire:model="form.status" :options="$statusOptions" option-name="name" option-value="value"
-                required />
-            <x-file label="Image" wire:model="form.image" accept="image/*" required />
+            <div class="flex justify-between">
+            <x-input label="Nama" wire:model="form.name" required />
+            <x-input label="Merek" wire:model="form.brand" required />
+        </div>
+        <div class="flex justify-between">
+            <x-input label="Tipe" wire:model="form.type" required />
+            <x-input type="number" label="Tahun" wire:model="form.year" required />
+        </div>
+        <div class="flex justify-between">
+            <x-input type="number" label="Jumlah Kursi" min="1" wire:model="form.seatsTotal" required />
+            <x-input type="number" label="Stok" min="0" wire:model="form.stock" required />
+        </div>
+        <x-input type="number" label="Harga" wire:model="form.price" step="0.01" required>
+            <x-slot:prefix>Rp</x-slot:prefix>
+        </x-input>
+        <x-select label="Status" wire:model="form.status" :options="$statusOptions" option-name="name"
+            option-value="value" required />
+        <x-file label="Gambar" wire:model="form.image" accept="image/*" />
 
             <div class="flex justify-end gap-x-4">
-                <x-button label="Cancel" flat @click="$wire.modalForm = false" />
-                <x-button type="submit" class="btn-success" label="{{ $editMode ? 'Update' : 'Create' }}" primary
+                <x-button label="Batal" flat @click="$wire.modalForm = false" />
+                <x-button type="submit" class="btn-success" label="{{ $editMode ? 'Perbarui' : 'Buat' }}" primary
                     spinner="save" />
             </div>
         </x-form>

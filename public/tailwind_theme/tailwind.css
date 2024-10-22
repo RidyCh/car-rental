@@ -981,7 +981,7 @@ img,
 
 h1, h2, h3, h4, h5, h6{
       font-family: 'Playfair Display', sans-serif;
-}                    
+}
 
 .poster {
 z-index: 0;
@@ -1003,11 +1003,11 @@ z-index: 0;
 
 body.poster:before {
 position: fixed;
-}                        
+}
 @media (min-width: 1440px), (min-width: 992px) and (-webkit-min-device-pixel-ratio: 2), (min-width: 992px) and (min-resolution: 192dpi) {
-    .poster:before {                        
-        background-image: url(https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?ixid=MnwyMDkyMnwwfDF8c2VhcmNofDE0fHxjYXJ8ZW58MHx8fHwxNjMxNjQ3NTY0&ixlib=rb-1.2.1q=85&fm=jpg&crop=faces&cs=srgb&w=2000&fit=max)!important;         
-    }                           
+    .poster:before {
+        background-image: url(https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?ixid=MnwyMDkyMnwwfDF8c2VhcmNofDE0fHxjYXJ8ZW58MHx8fHwxNjMxNjQ3NTY0&ixlib=rb-1.2.1q=85&fm=jpg&crop=faces&cs=srgb&w=2000&fit=max)!important;
+    }
 }
 body, html {min-height: 100vh;}
 .hover\:inline-flex:hover{

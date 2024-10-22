@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class CheckRole
@@ -13,12 +14,12 @@ class CheckRole
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next)
     {
-        if (auth()->check() && is_array(auth()->user()->role === ['Administrator', 'Petugas'])) {
+        if (Auth::guard('web')->check() && in_array(Auth::guard('web')->user()->role, ['Administrator', 'Petugas'])) {
             return $next($request);
         }
 
-        return abort (403);
+        return abort(404);
     }
 }

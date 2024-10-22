@@ -25,55 +25,34 @@ class Returned extends Component
 
     public bool $editMode = false;
 
-    public $modalDelete = null;
-
     public array $sortBy = ['column' => 'return_date', 'direction' => 'desc'];
 
-    public function openModal()
-    {
-        $this->form->reset();
-        $this->modalForm = true;
-        $this->editMode = false;
-    }
 
-    public function edit($id)
-    {
-        $returned = ModelsReturned::findOrFail($id);
+    // public function edit($id)
+    // {
+    //     $returned = ModelsReturned::findOrFail($id);
 
-        $this->form->setReturn($returned);
-        $this->modalForm = true;
-        $this->editMode = true;
-    }
+    //     $this->form->setReturn($returned);
+    //     $this->modalForm = true;
+    //     $this->editMode = true;
+    // }
 
-    public function delete()
-    {
-        if ($this->modalDelete) {
-            $this->form->delete($this->modalDelete);
-            $this->success('Data berhasil dihapus');
-            $this->modalDelete = null;
-        }
-    }
+    // public function save()
+    // {
+    //     if ($this->editMode) {
+    //         $this->form->update();
+    //         $this->success('Data updated successfully');
+    //     }
 
-    public function save()
-    {
-        if ($this->editMode) {
-            $this->form->update();
-            $this->success('Data updated successfully');
-
-        } else {
-            $this->form->store();
-            $this->success('Data created successfully');
-        }
-
-        $this->modalForm = false;
-        $this->editMode = false;
-    }
+    //     $this->modalForm = false;
+    //     $this->editMode = false;
+    // }
 
     public function headers(): array
     {
         return [
             ['key' => 'id', 'label' => '#', 'class' => 'w-1'],
-            ['key' => 'transaction_id', 'label' => 'ID Transaksi'],
+            ['key' => 'transaction_id', 'label' => 'Transaksi'],
             ['key' => 'return_date', 'label' => 'Tanggal Kembali'],
             ['key' => 'condition_car', 'label' => 'Kondisi Mobil'],
             ['key' => 'price_penalty', 'label' => 'Denda'],
@@ -87,8 +66,7 @@ class Returned extends Component
                 $query->orderBy($this->sortBy['column'], $this->sortBy['direction']);
             })
             ->when($this->search, function ($query) {
-                $query->where('transaction_id', 'like', '%' . $this->search . '%')
-                    ->orWhere('condition_car', 'like', '%' . $this->search . '%');
+                $query->where('transaction_id', 'like', '%' . $this->search . '%');
             })
             ->paginate(10);
     }

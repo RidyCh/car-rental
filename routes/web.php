@@ -28,7 +28,7 @@ Route::get('/logout', function () {
     request()->session()->regenerateToken();
 
     return redirect('/');
-})->name('logout');
+})->name('logout')->middleware('auth');
 
 // email verification view
 Route::get('/email/verify', App\Livewire\Auth\VerifyEmail::class)
@@ -43,15 +43,17 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
 })->middleware(['auth', 'signed'])->name('verification.verify');
 
 // forgot-password
-Route::get('/forgot-password', App\Livewire\Auth\ForgotPassword::class)->middleware('guest')->name('password.request');
+Route::get('/forgot-password', App\Livewire\Auth\ForgotPassword::class)->middleware('auth')->name('password.request');
 
 // reset password
-Route::get('/reset-password/{token}', App\Livewire\Auth\ResetPassword::class)->middleware('guest')->name('password.reset');
+Route::get('/reset-password/{token}', App\Livewire\Auth\ResetPassword::class)->middleware('auth')->name('password.reset');
+Route::get('/member/profile', App\Livewire\Profile::class)->middleware('auth')->name('member.profile');
 
-Route::middleware(['auth', 'check'])->group(function () {
+Route::middleware(['check'])->group(function () {
     Route::get('/admin/users', App\Livewire\Admin\Users::class)->name('admin.users');
     Route::get('/admin/cars', App\Livewire\Admin\Cars::class)->name('admin.cars');
     Route::get('/admin/transaction', App\Livewire\Admin\Transaction::class)->name('admin.transaction');
     Route::get('/admin/return', App\Livewire\Admin\Returned::class)->name('admin.return');
     Route::get('/admin/payment', App\Livewire\Admin\Payment::class)->name('admin.payment');
+    Route::get('/admin/report', App\Livewire\Admin\Report::class)->name('admin.report');
 });

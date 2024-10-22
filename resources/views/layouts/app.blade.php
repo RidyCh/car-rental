@@ -53,7 +53,7 @@
     </script>
 </head>
 
-<body class="min-h-screen font-serif text-gray-500 bg-base-200/50 dark:bg-base-200">
+<body class="min-h-screen font-serif text-gray-500 bg-base-200/50 dark:bg-base-200" data-theme="light">
     {{ $slot }}
 </body>
 

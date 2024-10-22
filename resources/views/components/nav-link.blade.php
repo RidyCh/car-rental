@@ -1,12 +1,11 @@
-@props(['name', 'href', 'active' => '', 'class' => ''])
+@props(['href', 'active' => false])
 
-<a href="{{ $href }}" class="{{ $class }} hover:text-gray-400 lg:p-4 py-2 text-white {{ request()->is($active) ? 'text-primary-500 font-bold' : '' }}"
-   :class="{ 'text-primary-500 font-bold': isActive('{{ $active }}') }">
-    {{ $name }}
+@php
+$classes = $active
+    ? 'inline-flex items-center px-1 pt-1 text-sm font-medium leading-5 text-primary-500'
+    : 'inline-flex items-center px-1 pt-1 text-sm font-medium leading-5 text-slate-200 hover:text-primary-500';
+@endphp
+
+<a wire:navigate {{ $attributes->merge(['href' => $href, 'class' => $classes]) }}>
+    {{ $slot }}
 </a>
-
-<script>
-    function isActive(route) {
-        return window.location.pathname === route;
-    }
-</script>
